@@ -1,58 +1,57 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# 🖥️ Gestor de Equipos IT
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Aplicación web profesional, donde he podido prácticar diferentes tecnologías, la aplicación creada sirve para gestionar el inventario de ordenadores de una empresa, construida con arquitectura MVC, borrado lógico y diseño corporativo.
+A continuación, explico el flujo de trabajo y las tecnologías utilizadas.
 
-## About Laravel
+---
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## 🛠️ Tecnologías
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+* **WSL2 / Ubuntu:** Un "corazón" de Linux nativo. Convierte Windows en un entorno profesional sin fallos de compatibilidad. Todos tus archivos y comandos viven aquí ahora.
+* **Docker Desktop:** El motor de los contenedores. Te permite tener mini-ordenadores aislados en lugar de instalar programas en tu Windows.
+* **DDEV:** Le da las órdenes a Docker. Gracias a él no hay que configurar manualmente PHP, Nginx ni MySQL. Con `ddev start` levantó todo el servidor.
+* **Laravel:** El framework (esqueleto) de PHP. Es el código base. Te da la seguridad y la estructura de carpetas para que no tengas que programar desde 0.
+* **Artisan:** El asistente de consola de Laravel. En lugar de crear archivos a mano, con comandos como `make:model` y `migrate` ha programado y configurado la base de datos por ti.
+* **Blade:** El motor de plantillas de Laravel. Permite escribir HTML normal pero inyectando lógica de PHP.
+* **Bootstrap (y Bootstrap Icons):** Framework de diseño CSS para crear interfaces visuales corporativas y responsivas sin escribir CSS a mano.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+---
 
-## Learning Laravel
+## 🔄 Flujo de trabajo (El ciclo CRUD y MVC)
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+### 1. Preparar infraestructura:
+* Encender virtualización en BIOS para crear máquinas virtuales.
+* Instalar WSL2 y Ubuntu para terminal de Linux.
+* Instalar Docker y conectarlo con Ubuntu para que pudieran comunicarse.
+* Instalar DDEV dentro de Linux para poder controlar Docker con comandos sencillos.
 
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+### 2. Levantar el servidor:
+* Creamos la carpeta del proyecto.
+* Ejecutamos `ddev config` y `ddev start`. Con esto, DDEV va a internet, baja una base de datos MySQL, un servidor web y la versión correcta de PHP aislando todo en un contenedor seguro.
+* Le pedimos a DDEV que descargue Laravel y lo meta en nuestra carpeta.
 
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
+### 3. Base de Datos (El Modelo):
+* **Los planos:** usamos Artisan para crear una migración. Abrimos el editor y le decimos a Laravel que la tabla necesita las columnas marca, modelo y estado.
+* **La construcción:** ejecutamos `ddev artisan migrate`. Laravel tradujo los planos a código SQL y construyó la tabla real y física dentro del MySQL del ordenador.
 
-## Agentic Development
+### 4. La lógica y las rutas (El Controlador):
+* **El mapa (`routes/web.php`):** Creamos la URL `/equipos` y la conectamos al controlador para que, cuando el usuario escriba esa dirección en su navegador, se dispare la lógica.
+* **El cerebro (`EquipoController.php`):** Extrae los datos del modelo y se los pasa a la vista.
 
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
+### 5. La Interfaz (Vista - Read):
+* En Vscode vamos a `resources/views` y creamos `equipos.blade.php`.
+* Escribimos HTML con Bootstrap inyectando variables de PHP con Blade para dibujar la tabla de ordenadores.
 
-```bash
-composer require laravel/boost --dev
+### 6. Formularios y Creación (Create):
+* Vista con formulario protegido con el token `@csrf`.
+* Ruta con método `POST` y función `store()` en el Controlador que usa la orden `save()` para inyectar los datos en MySQL.
 
-php artisan boost:install
-```
+### 7. Edición (Update):
+* Ruta dinámica con ID (`/equipos/{id}/editar`).
+* Controlador que busca el equipo específico con `Equipo::find($id)` y muestra el formulario relleno.
+* Guardado de datos sobrescritos mediante el método `PUT`.
 
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
-
-## Contributing
-
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
-
-## Code of Conduct
-
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+### 8. Eliminación Profesional (Delete):
+* Uso de Modal de Bootstrap para confirmación de seguridad.
+* Formulario oculto con método `DELETE`.
+* **Soft Delete (Borrado Lógico):** En lugar de borrar físicamente el registro de la BD, usamos una migración para añadir la columna `deleted_at`, ocultando el equipo pero manteniendo el histórico corporativo intacto.
