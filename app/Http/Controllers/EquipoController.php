@@ -8,14 +8,34 @@ use App\Models\Equipo;
 class EquipoController extends Controller
 {
     //Funcion para mostrar la lista de equipos
-    public function index()
-    {
-        //Obtener todos los equipos
-        $equipos = Equipo::all();
+    public function index(\Illuminate\Http\Request $request) {
+    
+    //Consulta de los filtros
+    $consulta = \App\Models\Equipo::query();
 
-        //Llamar a la vista con el modelo
-        return view('equipos', ['misEquipos' => $equipos]);
+    //filtro por marca y modelo
+    if ($request->has('buscar') && $request->buscar != '') {
+        $texto = $request->buscar;
+        // Buscamos si el texto coincide con la marca o con el modelo
+        $consulta->where(function($q) use ($texto) {
+            $q->where('marca', 'like', '%' . $texto . '%')
+              ->orWhere('modelo', 'like', '%' . $texto . '%');
+        });
     }
+
+    //Filtro por estado
+    if ($request->has('estado') && $request->estado != '') {
+        $consulta->where('estado', $request->estado);
+    }
+
+    //Una vez aplicados los filtros, EJECUTAMOS la búsqueda en la BBDD
+    //Usamos latest() para que los últimos creados salgan los primeros
+    $equipos = $consulta->latest()->get();
+
+    //Se lo pasamos a la Vista
+    return view('equipos', compact('equipos'));
+    }
+
 
     public function create()
     {
@@ -23,6 +43,7 @@ class EquipoController extends Controller
 
     }
 
+    //Función para crear nuevo equipo
     public function store(Request $request) {
 
         //Crear un nuevo objeto  equipo
@@ -40,7 +61,7 @@ class EquipoController extends Controller
         return redirect('/equipos');
     }
 
-    // Función para mostrar el formulario de edición con los datos cargados
+    // Función mostrar datos completos de edición
     public function edit($id)
     {
         //Buscamos el equipo concreto por su ID

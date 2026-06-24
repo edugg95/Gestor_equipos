@@ -3,10 +3,9 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gestor IT | Equipos</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+
 </head>
 
 <body class="bg-light">
@@ -20,6 +19,7 @@
     </nav>
 
     <div class="container">
+        <!-- Botón para añadir equipos -->
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h2 class="text-secondary fw-bold m-0">Inventario de Equipos</h2>
             <a href="/equipos/crear" class="btn btn-primary shadow-sm fw-bold rounded-pill px-4">
@@ -29,6 +29,52 @@
 
         <div class="card border-0 shadow-sm rounded-4 overflow-hidden">
             <div class="card-body p-0">
+
+
+                <!-- Formulario para filtrar por estado y marca -->
+
+                <form action="/equipos" method="GET" class="card card-body border-0 shadow-sm mb-4 rounded-4">
+                    <div class="row g-3">
+
+                        <!-- Filtro por marca/modelo -->
+                        <div class="col-md-6">
+                            <div class="input-group">
+                                <span class="input-group-text bg-white border-end-0"><i
+                                        class="bi bi-search text-muted"></i></span>
+                                <input type="text" name="buscar" class="form-control border-start-0"
+                                    placeholder="Buscar por marca, modelo..." value="{{ request('buscar') }}">
+                            </div>
+                        </div>
+
+                        <!-- Filtro por estado -->
+                        <div class="col-md-4">
+                            <select name="estado" class="form-select">
+                                <option value="">Estado</option>
+                                <option value="Disponible" {{ request('estado') == 'Disponible' ? 'selected' : '' }}>
+                                    🟢Disponible</option>
+                                <option value="Asignado" {{ request('estado') == 'Asignado' ? 'selected' : '' }}>
+                                    🔵Asignado
+                                </option>
+                                <option value="Reparacion" {{ request('estado') == 'Reparacion' ? 'selected' : '' }}>
+                                    🔴 En reparación</option>
+                            </select>
+                        </div>
+
+                        <!-- Botón para filtrar -->
+                        <div class="col-md-2 d-flex gap-2">
+                            <button type="submit" class="btn btn-primary w-100 fw-bold">Filtrar</button>
+
+                            <!-- Botón para limpiar el filtro -->
+                            @if (request('buscar') || request('estado'))
+                                <a href="/equipos" class="btn btn-light border"><i class="bi bi-x-lg"></i></a>
+                            @endif
+                        </div>
+
+                    </div>
+                </form>
+
+                <!-- tabla de equipos -->
+
                 <table class="table table-hover mb-0">
                     <thead class="table-primary">
                         <tr>
@@ -39,7 +85,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @forelse($misEquipos as $equipo)
+                        @forelse($equipos as $equipo)
                             <tr>
                                 <td class="px-4 py-3 align-middle fw-bold">{{ $equipo->marca }}</td>
                                 <td class="py-3 align-middle">{{ $equipo->modelo }}</td>
