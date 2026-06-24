@@ -3,13 +3,6 @@
 Aplicación web profesional, donde he podido prácticar diferentes tecnologías. El Gestor de Inventario IT es una aplicación web de uso interno diseñada para centralizar, proteger y optimizar el control del equipamiento informático de una empresa.
 La aplicación se encuentra aún se encuentra en fase de desarrollo, e implementará nuevas funcionalidades y mejoras en el futuro.
 
-
-# 💻 Gestor de Inventario IT
-
-Aplicación web profesional donde he podido practicar diferentes tecnologías. La aplicación creada sirve para gestionar el inventario de ordenadores de una empresa, construida con arquitectura **MVC** (Modelo-Vista-Controlador), borrado lógico, sistema de autenticación seguro y diseño corporativo. 
-
----
-
 ## 💻 Como ejecutar la aplicación localmente
 
 Si quieres clonar este repositorio y probar la aplicación en tu máquina, asegúrate de tener instalado **Docker** y **DDEV**. Luego, ejecuta los siguientes comandos en tu terminal:
