@@ -23,7 +23,7 @@ class LoginController extends Controller
             $request->session()->regenerate();
 
             // lo mandamos al inventario de equipos
-            return redirect('/equipos');
+            return redirect('/equipos')->with('success', '¡Has iniciado sesión con éxito!');
         }
 
         //Si no coincide, le devolvemos a la puerta (login) con un error

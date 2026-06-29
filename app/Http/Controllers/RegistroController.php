@@ -32,6 +32,6 @@ class RegistroController extends Controller
         $usuario->save();
 
         //Una vez registrado, redirigimos al login
-        return redirect('/login');
+        return redirect('/login')->with('success', '¡Te has registrado correctamente!');
     }
 }

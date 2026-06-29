@@ -5,12 +5,40 @@
     <meta charset="UTF-8">
     <title>Gestor IT | Iniciar Sesión</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+
+    <script>
+        // Se ejecuta cuando la página ha terminado de cargar
+        document.addEventListener("DOMContentLoaded", function() {
+            // Ponemos un temporizador  (3 segundos)
+            setTimeout(function() {
+                // Buscamos todas las alertas que haya en la pantalla
+                let alertas = document.querySelectorAll('.alert');
+                
+                alertas.forEach(function(alerta) {
+                    // Usamos la función nativa de Bootstrap para cerrarlas con animación
+                    let bsAlert = new bootstrap.Alert(alerta);
+                    bsAlert.close();
+                });
+            }, 3000);
+        });
+    </script>
+</body>
 </head>
 
 <body class="bg-light d-flex align-items-center vh-100">
 
     <div class="container">
-        <div class="col-md-5 mx-auto card border-0 shadow-lg rounded-4 p-4">
+
+        <div class="container mt-4">
+            @if(session('success'))
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <i class="bi bi-check-circle-fill me-2"></i> {{ session('success') }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            @endif
 
             <form action="/login" method="POST">
 

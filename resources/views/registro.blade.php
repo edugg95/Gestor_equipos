@@ -30,8 +30,8 @@
                         @csrf
 
                         <div class="form-floating mb-3">
-                            <input type="text" class="form-control bg-light" id="name" name="name"
-                                placeholder="Nombre" required>
+                            <input type="text" class="form-control bg-light" id="name" name="name" placeholder="Nombre"
+                                required>
                             <label for="name" class="text-muted"><i class="bi bi-person me-2"></i>Nombre</label>
                         </div>
 
@@ -40,6 +40,11 @@
                                 placeholder="correo@ejemplo.com" required>
                             <label for="email" class="text-muted"><i class="bi bi-envelope me-2"></i>Correo
                                 Electrónico</label>
+                            @error('email')
+                                <div class="invalid-feedback">
+                                    {{ $message }}
+                                </div>
+                            @enderror
                         </div>
 
                         <div class="form-floating mb-3">
