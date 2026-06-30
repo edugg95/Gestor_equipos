@@ -5,6 +5,8 @@
     <meta charset="UTF-8">
     <title>Gestor IT | Añadir Equipo</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
 </head>
 
@@ -25,6 +27,7 @@
                 <div class="card border-0 shadow rounded-4 p-4">
                     <h3 class="mb-4 text-center text-dark fw-bold">Nuevo Equipo</h3>
 
+                    <!-- Formulario para crear un nuevo equipo -->
                     <form action="/equipos" method="POST">
                         @csrf
 
@@ -33,12 +36,22 @@
                                 placeholder="Lenovo" required>
                             <label for="marca" class="text-muted"><i class="bi bi-tag me-2"></i>Marca del
                                 Equipo</label>
+
+                            <!-- Error marca -->
+                            @error('marca')
+                                <span class="text-danger">{{ $message }}</span>
+                            @enderror
                         </div>
 
                         <div class="form-floating mb-3">
                             <input type="text" class="form-control bg-light" id="modelo" name="modelo"
                                 placeholder="ThinkPad" required>
                             <label for="modelo" class="text-muted"><i class="bi bi-laptop me-2"></i>Modelo</label>
+
+                            <!-- Error modelo -->
+                            @error('modelo')
+                                <span class="text-danger">{{ $message }}</span>
+                            @enderror
                         </div>
 
                         <div class="form-floating mb-4">
@@ -46,10 +59,15 @@
                                 <option value="" disabled selected>Despliega para elegir...</option>
                                 <option value="Disponible">🟢 Disponible</option>
                                 <option value="Asignado">🔵 Asignado</option>
-                                <option value="En Reparación">🔴 En Reparación</option>
+                                <option value="Reparacion">🔴 En Reparación</option>
                             </select>
                             <label for="estado" class="text-muted"><i class="bi bi-activity me-2"></i>Estado
                                 Actual</label>
+
+                            <!-- Error estado -->
+                            @error('estado')
+                                <div class="invalid-feedback fw-bold">{{ $message }}</div>
+                            @enderror
                         </div>
 
                         <div class="d-grid gap-2">

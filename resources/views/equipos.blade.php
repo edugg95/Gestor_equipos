@@ -11,13 +11,13 @@
 
     <script>
         // Se ejecuta cuando la página ha terminado de cargar
-        document.addEventListener("DOMContentLoaded", function () {
+        document.addEventListener("DOMContentLoaded", function() {
             // Ponemos un temporizador de 3000 milisegundos (3 segundos)
-            setTimeout(function () {
+            setTimeout(function() {
                 // Buscamos todas las alertas que haya en la pantalla
                 let alertas = document.querySelectorAll('.alert');
 
-                alertas.forEach(function (alerta) {
+                alertas.forEach(function(alerta) {
                     // Usamos la función nativa de Bootstrap para cerrarlas con animación
                     let bsAlert = new bootstrap.Alert(alerta);
                     bsAlert.close();
@@ -36,17 +36,27 @@
             <a class="navbar-brand fw-bold" href="/equipos">
                 <i class="bi bi-pc-display-horizontal me-2"></i>Gestor Equipos IT
             </a>
+
+            <!-- boton de Logout -->
+            <form action="/logout" method="POST" class="m-0">
+                @csrf
+                <button type="submit" class="btn btn-outline-danger btn-sm rounded-pill px-3 fw-bold">
+                    <i class="bi bi-box-arrow-right me-1"></i> Cerrar Sesión
+                </button>
+            </form>
         </div>
+
     </nav>
 
-    @if(session('success'))
+
+    @if (session('success'))
         <div class="alert alert-success alert-dismissible fade show" role="alert">
             <i class="bi bi-check-circle-fill me-2"></i> {{ session('success') }}
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
     @endif
 
-    @if(session('error'))
+    @if (session('error'))
         <div class="alert alert-danger alert-dismissible fade show" role="alert">
             <i class="bi bi-exclamation-triangle-fill me-2"></i> {{ session('error') }}
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
@@ -132,7 +142,8 @@
                                         <span class="badge bg-primary rounded-pill px-3 py-2"><i
                                                 class="bi bi-person-badge me-1"></i>Asignado</span>
                                     @else
-                                        <span class="badge bg-danger rounded-pill px-3 py-2"><i class="bi bi-tools me-1"></i>En
+                                        <span class="badge bg-danger rounded-pill px-3 py-2"><i
+                                                class="bi bi-tools me-1"></i>En
                                             Reparación</span>
                                     @endif
                                 </td>
@@ -171,10 +182,12 @@
                                                 </div>
 
                                                 <div class="modal-footer border-top-0 pt-0">
-                                                    <button type="button" class="btn btn-light fw-bold rounded-pill px-4"
+                                                    <button type="button"
+                                                        class="btn btn-light fw-bold rounded-pill px-4"
                                                         data-bs-dismiss="modal">Cancelar</button>
 
-                                                    <form action="/equipos/{{ $equipo->id }}" method="POST" class="m-0">
+                                                    <form action="/equipos/{{ $equipo->id }}" method="POST"
+                                                        class="m-0">
                                                         @csrf
                                                         @method('DELETE')
                                                         <button type="submit"
@@ -199,6 +212,11 @@
                         @endforelse
                     </tbody>
                 </table>
+                <!-- Paginación: links() funcion que genera los enlaces de paginación.
+                pagination::bootstrap-5 es el tipo de paginación que usamos. -->
+                <div class="mt-4 d-flex justify-content-center">
+                    {{ $equipos->links('pagination::bootstrap-5') }}
+                </div>
             </div>
         </div>
     </div>

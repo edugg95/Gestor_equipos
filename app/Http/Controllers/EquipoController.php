@@ -30,7 +30,11 @@ class EquipoController extends Controller
 
     //Una vez aplicados los filtros, EJECUTAMOS la búsqueda en la BBDD
     //Usamos latest() para que los últimos creados salgan los primeros
-    $equipos = $consulta->latest()->get();
+    
+    //Implementamos paginación para que salgan de 10 a 10 equipos por página.
+    //Con el método withQueryString() le pasamos el query string preservado a la vista 
+    //Esta directiva garantiza que los parámetros GET se concatenen a los enlaces de paginación
+    $equipos = $consulta->latest()->paginate(10)->withQueryString();
 
     //Se lo pasamos a la Vista
     return view('equipos', compact('equipos'));
@@ -46,19 +50,26 @@ class EquipoController extends Controller
     //Función para crear nuevo equipo
     public function store(Request $request) {
 
-        //Crear un nuevo objeto  equipo
-        $nuevoEquipo = new Equipo();
+        //Validamos los datos del formulario
+        $request->validate([
+            'marca'  => 'required|string',
+            'modelo' => 'required|string',
+            'estado' => 'required|in:Disponible,Asignado,Reparacion',
+        ], [
+            'marca.required'  => 'Por favor, escribe la marca del equipo.',
+            'modelo.required' => 'Por favor, escribe el modelo del equipo.',
+            'estado.required' => 'Debes seleccionar un estado de la lista.',
+        ]);
 
-        //Le metemos los datos del formulario
+        $nuevoEquipo = new Equipo();
         $nuevoEquipo->marca = $request->marca;
         $nuevoEquipo->modelo = $request->modelo;
         $nuevoEquipo->estado = $request->estado;
-
-        //Guardamos el objeto en la base de datos
+        
         $nuevoEquipo->save();
 
-        //Redireccionamos a la lista de equipos
-        return redirect('/equipos');
+       
+        return redirect('/equipos')->with('success', 'Equipo creado correctamente.');
     }
 
     // Función mostrar datos completos de edición
@@ -74,6 +85,17 @@ class EquipoController extends Controller
     //Función para procesar la edición del equipo en MySQL
     public function update(Request $request, $id)
     {
+        //Validamos los datos del formulario
+         $request->validate([
+            'marca'  => 'required|string',
+            'modelo' => 'required|string',
+            'estado' => 'required|in:Disponible,Asignado,Reparacion',
+        ], [
+            'marca.required'  => 'Por favor, escribe la marca del equipo.',
+            'modelo.required' => 'Por favor, escribe el modelo del equipo.',
+            'estado.required' => 'Debes seleccionar un estado de la lista.',
+        ]);
+
         //Buscamos el equipo existente en la base de datos por su ID
         $equipoEncontrado = Equipo::find($id);
 
@@ -86,7 +108,7 @@ class EquipoController extends Controller
         $equipoEncontrado->save();
 
         //Redirigimos al inventario principal
-        return redirect('/equipos');
+       return redirect('/equipos')->with('success', 'El equipo se ha actualizado correctamente.');
     }
 
     // Función para eliminar un equipo
@@ -99,7 +121,7 @@ class EquipoController extends Controller
         $equipoParaBorrar->delete();
 
         //Volvems a la tabla principal
-        return redirect('/equipos');
+        return redirect('/equipos')->with('success', 'El equipo ha sido eliminado del sistema.');
     }
 }
  

@@ -31,4 +31,19 @@ class LoginController extends Controller
             'email' => 'El correo o la contraseña son incorrectos.',
         ]);
     }
+
+    public function logout()
+    {
+        // Destruimos la sesión
+        Auth::logout();
+
+        // Invalidamos la sesión en la BBDD
+        $request->session()->invalidate();
+
+        // Regeneramos la sesión en el navegador
+        $request->session()->regenerateToken();
+
+        // Lo mandamos al inventario de equipos
+        return redirect('/login')->with('success', 'Has cerrado la sesión correctamente.');
+    }
 }

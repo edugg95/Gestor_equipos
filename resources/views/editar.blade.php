@@ -34,12 +34,20 @@
                                 value="{{ $equipoParaEditar->marca }}" required>
                             <label for="marca" class="text-muted"><i class="bi bi-tag me-2"></i>Marca del
                                 Equipo</label>
+
+                            @error('marca')
+                                <span class="text-danger">{{ $message }}</span>
+                            @enderror
                         </div>
 
                         <div class="form-floating mb-3">
                             <input type="text" class="form-control bg-light" id="modelo" name="modelo"
                                 value="{{ $equipoParaEditar->modelo }}" required>
                             <label for="modelo" class="text-muted"><i class="bi bi-laptop me-2"></i>Modelo</label>
+
+                            @error('modelo')
+                                <span class="text-danger">{{ $message }}</span>
+                            @enderror
                         </div>
 
                         <div class="form-floating mb-4">
@@ -49,12 +57,16 @@
                                 </option>
                                 <option value="Asignado"
                                     {{ $equipoParaEditar->estado == 'Asignado' ? 'selected' : '' }}>🔵 Asignado</option>
-                                <option value="En Reparación"
+                                <option value="Reparación"
                                     {{ $equipoParaEditar->estado == 'En Reparación' ? 'selected' : '' }}>🔴 En
                                     Reparación</option>
                             </select>
                             <label for="estado" class="text-muted"><i class="bi bi-activity me-2"></i>Estado
                                 Actual</label>
+
+                            @error('estado')
+                                <span class="text-danger">{{ $message }}</span>
+                            @enderror
                         </div>
 
                         <div class="d-grid gap-2">
